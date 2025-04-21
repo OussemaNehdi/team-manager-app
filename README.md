@@ -12,4 +12,9 @@ A modern full-stack application for managing tasks and deadlines within remote t
 - **DevOps Ready**: Docker & Kubernetes-compatible structure  
 - **Version Control**: Git & GitHub (feature branch workflow)  
 
+
+along with Secops, IaC Terraform and Ansible
+SecOps
+Monitoring
+
 ---
