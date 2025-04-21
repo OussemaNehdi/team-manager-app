@@ -1,0 +1,27 @@
+ADDED const cors = require('cors'); SO FRONTEND CAM COMMUNICATE WITH BACKEND
+
+BACKEND-----------
+installed node js and npm 
+
+
+
+intiliazsed inside backend folder and made type script compatible with express
+
+npm init -y
+npm install express typescript ts-node @types/node @types/express
+npx tsc --init
+
+made src folder and inside it that file and then runned to start server 
+
+npx ts-node src/index.ts
+
+
+FRONTEND --------------------
+
+to create a react app i did this 
+
+npx create-react-app . --template typescript 
+
+after creatig that file in src called App.tsx
+
+npm start and changed port automatically to 3001 cuz 3000 is a used port
