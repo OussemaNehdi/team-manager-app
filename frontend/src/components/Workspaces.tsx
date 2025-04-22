@@ -2,13 +2,14 @@ import React, { useState, useEffect } from 'react';
 
 interface WorkspacesProps {
   userId: number;
+  setSelectedWorkspaceId: (id: number) => void;
 }
 
-const Workspaces: React.FC<WorkspacesProps> = ({ userId }) => {
+const Workspaces: React.FC<WorkspacesProps> = ({ userId, setSelectedWorkspaceId }) => {
   const [workspaces, setWorkspaces] = useState([]);
-  const [name, setName] = useState('');
-  const [description, setDescription] = useState('');
-  const [workspaceId, setWorkspaceId] = useState('');
+  const [newWorkspaceName, setNewWorkspaceName] = useState('');
+  const [newWorkspaceDescription, setNewWorkspaceDescription] = useState('');
+  const [joinWorkspaceId, setJoinWorkspaceId] = useState('');
 
   const fetchWorkspaces = async () => {
     try {
@@ -25,16 +26,20 @@ const Workspaces: React.FC<WorkspacesProps> = ({ userId }) => {
       const response = await fetch('http://localhost:3000/api/workspaces/create', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, description, userId }),
+        body: JSON.stringify({
+          name: newWorkspaceName,
+          description: newWorkspaceDescription,
+          userId,
+        }),
       });
 
-      if (!response.ok) {
-        const errorText = await response.text();
-        alert(`Error: ${errorText}`);
-        return;
+      if (response.ok) {
+        fetchWorkspaces(); // Refresh the workspace list
+        setNewWorkspaceName('');
+        setNewWorkspaceDescription('');
+      } else {
+        alert('Failed to create workspace');
       }
-
-      fetchWorkspaces();
     } catch (error) {
       console.error('Error creating workspace:', error);
     }
@@ -45,16 +50,18 @@ const Workspaces: React.FC<WorkspacesProps> = ({ userId }) => {
       const response = await fetch('http://localhost:3000/api/workspaces/join', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ userId, workspaceId, role: 'member' }),
+        body: JSON.stringify({
+          userId,
+          workspaceId: joinWorkspaceId,
+        }),
       });
 
-      if (!response.ok) {
-        const errorText = await response.text();
-        alert(`Error: ${errorText}`);
-        return;
+      if (response.ok) {
+        fetchWorkspaces(); // Refresh the workspace list
+        setJoinWorkspaceId('');
+      } else {
+        alert('Failed to join workspace');
       }
-
-      fetchWorkspaces();
     } catch (error) {
       console.error('Error joining workspace:', error);
     }
@@ -67,33 +74,46 @@ const Workspaces: React.FC<WorkspacesProps> = ({ userId }) => {
   return (
     <div>
       <h2>My Workspaces</h2>
+
+      {/* Create Workspace Section */}
+      <div>
+        <h3>Create Workspace</h3>
+        <input
+          type="text"
+          placeholder="Workspace Name"
+          value={newWorkspaceName}
+          onChange={(e) => setNewWorkspaceName(e.target.value)}
+        />
+        <input
+          type="text"
+          placeholder="Workspace Description"
+          value={newWorkspaceDescription}
+          onChange={(e) => setNewWorkspaceDescription(e.target.value)}
+        />
+        <button onClick={handleCreateWorkspace}>Create</button>
+      </div>
+
+      {/* Join Workspace Section */}
+      <div>
+        <h3>Join Workspace</h3>
+        <input
+          type="text"
+          placeholder="Workspace ID"
+          value={joinWorkspaceId}
+          onChange={(e) => setJoinWorkspaceId(e.target.value)}
+        />
+        <button onClick={handleJoinWorkspace}>Join</button>
+      </div>
+
+      {/* List of Workspaces */}
       <ul>
         {workspaces.map((workspace: any) => (
-          <li key={workspace.id}>{workspace.name}</li>
+          <li key={workspace.id}>
+            {workspace.name} - {workspace.description}
+            <button onClick={() => setSelectedWorkspaceId(workspace.id)}>Enter</button>
+          </li>
         ))}
       </ul>
-      <h3>Create Workspace</h3>
-      <input
-        type="text"
-        placeholder="Name"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-      />
-      <input
-        type="text"
-        placeholder="Description"
-        value={description}
-        onChange={(e) => setDescription(e.target.value)}
-      />
-      <button onClick={handleCreateWorkspace}>Create</button>
-      <h3>Join Workspace</h3>
-      <input
-        type="text"
-        placeholder="Workspace ID"
-        value={workspaceId}
-        onChange={(e) => setWorkspaceId(e.target.value)}
-      />
-      <button onClick={handleJoinWorkspace}>Join</button>
     </div>
   );
 };
