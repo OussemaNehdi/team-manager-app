@@ -1,6 +1,6 @@
 ADDED const cors = require('cors'); SO FRONTEND CAM COMMUNICATE WITH BACKEND
 
-BACKEND-----------
+BACKEND-----------3000
 installed node js and npm 
 
 
@@ -16,7 +16,7 @@ made src folder and inside it that file and then runned to start server
 npx ts-node src/index.ts
 
 
-FRONTEND --------------------
+FRONTEND --------------------3001
 
 to create a react app i did this 
 
@@ -25,3 +25,64 @@ npx create-react-app . --template typescript
 after creatig that file in src called App.tsx
 
 npm start and changed port automatically to 3001 cuz 3000 is a used port
+
+
+
+DATABASE--------------------5432
+sudo apt install postgresql postgresql-contrib
+sudo -u postgres psql
+CREATE USER myuser WITH PASSWORD 'mypassword';
+CREATE DATABASE mydb OWNER myuser;
+GRANT ALL PRIVILEGES ON DATABASE mydb TO myuser; #because this will grant permissions only for database operations
+GRANT SELECT ON TABLE tasks TO myuser;
+\q
+
+#then in backend 
+npm install pg
+npm install --save-dev @types/pg
+
+#and create the table
+sudo -u postgres psql mydb
+
+
+
+CREATE TABLE users (
+  id SERIAL PRIMARY KEY,
+  email TEXT UNIQUE NOT NULL,
+  password TEXT NOT NULL,
+  name TEXT,
+  admin BOOLEAN DEFAULT false
+);
+
+
+CREATE TABLE workspaces (
+  id SERIAL PRIMARY KEY,
+  name VARCHAR(255) NOT NULL,
+  description TEXT,
+  owner_id INT REFERENCES users(id) ON DELETE CASCADE,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+
+CREATE TABLE workspace_memberships (
+  user_id INT REFERENCES users(id) ON DELETE CASCADE,
+  workspace_id INT REFERENCES workspaces(id) ON DELETE CASCADE,
+  role VARCHAR(50) NOT NULL,  -- "member" or "owner"
+  PRIMARY KEY (user_id, workspace_id)
+);
+
+
+CREATE TABLE tasks (
+  id SERIAL PRIMARY KEY,
+  workspace_id INT REFERENCES workspaces(id) ON DELETE CASCADE,
+  title TEXT NOT NULL,
+  description TEXT,
+  deadline TIMESTAMP,
+  done BOOLEAN DEFAULT FALSE,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+grant permission for every table 
+RANT SELECT, INSERT, UPDATE, DELETE ON TABLE workspaces TO myuser;
+GRANT USAGE, SELECT ON SEQUENCE workspaces_id_seq TO myuser;
+etc etc
