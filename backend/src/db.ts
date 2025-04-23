@@ -1,9 +1,10 @@
+// filepath: /home/me/team-manager-app/backend/src/db.ts
 import { Pool } from 'pg';
 
 export const pool = new Pool({
-  user: 'myuser',
-  host: 'localhost',
-  database: 'mydb',
-  password: 'mypassword',
-  port: 5432,
+  user: process.env.DB_USER || 'myuser',
+  host: process.env.DB_HOST || 'localhost', // Use DB_HOST from environment variables
+  database: process.env.DB_NAME || 'mydb',
+  password: process.env.DB_PASSWORD || 'mypassword',
+  port: parseInt(process.env.DB_PORT || '5432', 10),
 });

@@ -15,7 +15,7 @@ const Tasks: React.FC<TasksProps> = ({ userId, workspaceId, setSelectedWorkspace
 
   const fetchTasks = async () => {
     try {
-      const response = await fetch(`http://localhost:3000/api/tasks/${workspaceId}`);
+      const response = await fetch(process.env.REACT_APP_API_URL+`/api/tasks/${workspaceId}`);
       const data = await response.json();
       setTasks(data);
     } catch (error) {
@@ -25,7 +25,7 @@ const Tasks: React.FC<TasksProps> = ({ userId, workspaceId, setSelectedWorkspace
 
   const checkOwnership = async () => {
     try {
-      const response = await fetch(`http://localhost:3000/api/workspaces/${userId}`);
+      const response = await fetch(process.env.REACT_APP_API_URL+`/api/workspaces/${userId}`);
       const data = await response.json();
       const workspace = data.find((w: any) => w.id === workspaceId);
       setIsOwner(workspace?.owner_id === userId);
@@ -36,7 +36,7 @@ const Tasks: React.FC<TasksProps> = ({ userId, workspaceId, setSelectedWorkspace
 
   const handleAddTask = async () => {
     try {
-      const response = await fetch('http://localhost:3000/api/tasks', {
+      const response = await fetch(process.env.REACT_APP_API_URL+'/api/tasks', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ workspaceId, title, description, deadline }),

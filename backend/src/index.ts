@@ -100,7 +100,7 @@ app.get('/api/workspaces/:userId', async (req: Request, res: Response): Promise<
       `SELECT * FROM workspaces WHERE owner_id = $1 OR id IN (
         SELECT workspace_id FROM workspace_memberships WHERE user_id = $1
       )`,
-      [userId]
+      [userId] //so just to explain this to you basically i selected first the workspaces he own and then the workspaces he is a member in 
     );
     res.status(200).json(result.rows);
   } catch (error) {
@@ -168,7 +168,7 @@ app.get('/api/tasks/:workspaceId', async (req: Request, res: Response): Promise<
 });
 
 // Start the server
-const PORT = 3000;
+const PORT = 3001;
 app.listen(PORT, () => {
   console.log(`Backend is running on http://localhost:${PORT}`);
 });
