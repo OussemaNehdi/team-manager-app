@@ -13,8 +13,6 @@ A modern full-stack application for managing tasks and deadlines within remote t
 - **Version Control**: Git & GitHub (feature branch workflow)  
 
 
-along with Secops, IaC Terraform and Ansible
-SecOps
-Monitoring
+along with SecOps, IaC Terraform and Ansible and Monitoring
 
 ---
