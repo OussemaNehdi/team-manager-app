@@ -1,0 +1,52 @@
+---
+- name: Setup K3s server
+  hosts: master
+  become: yes
+  tasks:
+    - name: Clean previous K3s installation (if any)
+      shell: |
+        if [ -f /usr/local/bin/k3s-uninstall.sh ]; then
+          /usr/local/bin/k3s-uninstall.sh
+        fi
+        rm -rf /etc/rancher/k3s /var/lib/rancher/k3s /usr/local/bin/k3s*
+      ignore_errors: yes
+
+    - name: Install K3s server
+      shell: |
+        curl -sfL https://get.k3s.io | sh -
+      environment:
+        INSTALL_K3S_EXEC: "server --disable traefik"
+
+    - name: Wait for K3s server to be ready
+      shell: |
+        until [ -f /var/lib/rancher/k3s/server/node-token ]; do
+          sleep 2
+        done
+
+    - name: Get the K3s node token
+      slurp:
+        src: /var/lib/rancher/k3s/server/node-token
+      register: node_token_raw
+
+    - name: Set fact for node token
+      set_fact:
+        node_token: "{{ node_token_raw['content'] | b64decode | trim }}"
+
+- name: Setup K3s agents
+  hosts: workers
+  become: yes
+  vars:
+    master_ip: "{{ hostvars[groups['master'][0]]['ansible_default_ipv4']['address'] }}"
+    node_token: "{{ hostvars[groups['master'][0]]['node_token'] }}"
+  tasks:
+    - name: Clean previous K3s agent installation (if any)
+      shell: |
+        if [ -f /usr/local/bin/k3s-agent-uninstall.sh ]; then
+          /usr/local/bin/k3s-agent-uninstall.sh
+        fi
+        rm -rf /etc/rancher/k3s /var/lib/rancher/k3s /usr/local/bin/k3s*
+      ignore_errors: yes
+
+    - name: Install K3s agent
+      shell: |
+        curl -sfL https://get.k3s.io | K3S_URL=https://{{ master_ip }}:6443 K3S_TOKEN={{ node_token }} sh -

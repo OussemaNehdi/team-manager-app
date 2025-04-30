@@ -10,10 +10,12 @@ const Workspaces: React.FC<WorkspacesProps> = ({ userId, setSelectedWorkspaceId 
   const [newWorkspaceName, setNewWorkspaceName] = useState('');
   const [newWorkspaceDescription, setNewWorkspaceDescription] = useState('');
   const [joinWorkspaceId, setJoinWorkspaceId] = useState('');
+  // const REACT_APP = process.env.REACT_APP_API_URL || 'http://localhost:3001';
+  
 
   const fetchWorkspaces = async () => {
     try {
-      const response = await fetch(process.env.REACT_APP_API_URL+`/api/workspaces/${userId}`);
+      const response = await fetch(`/api/workspaces/${userId}`);
       const data = await response.json();
       setWorkspaces(data);
     } catch (error) {
@@ -23,7 +25,7 @@ const Workspaces: React.FC<WorkspacesProps> = ({ userId, setSelectedWorkspaceId 
 
   const handleCreateWorkspace = async () => {
     try {
-      const response = await fetch(process.env.REACT_APP_API_URL+'/api/workspaces/create', {
+      const response = await fetch('/api/workspaces/create', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -47,7 +49,7 @@ const Workspaces: React.FC<WorkspacesProps> = ({ userId, setSelectedWorkspaceId 
 
   const handleJoinWorkspace = async () => {
     try {
-      const response = await fetch(process.env.REACT_APP_API_URL+'/api/workspaces/join', {
+      const response = await fetch('/api/workspaces/join', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

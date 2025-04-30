@@ -7,11 +7,12 @@ interface LoginProps {
 const Login: React.FC<LoginProps> = ({ setUserId }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  
 
   const handleLogin = async () => {
     console.log("Hanld logic fire")
     try {
-      const response = await fetch(process.env.REACT_APP_API_URL + '/api/login', {
+      const response = await fetch('/api/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
@@ -38,6 +39,7 @@ const Login: React.FC<LoginProps> = ({ setUserId }) => {
   return (
     <div>
       <h2>Login</h2>
+
       <input
         type="email"
         placeholder="Email"
@@ -45,7 +47,7 @@ const Login: React.FC<LoginProps> = ({ setUserId }) => {
         onChange={(e) => setEmail(e.target.value)}
       />
       <input
-        type="password"
+        type="password" 
         placeholder="Password"
         value={password}
         onChange={(e) => setPassword(e.target.value)}

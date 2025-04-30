@@ -8,10 +8,11 @@ const Signup: React.FC<SignupProps> = ({ setUserId }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
+  // const REACT_APP = process.env.REACT_APP_API_URL || 'http://localhost:3001';
 
   const handleSignup = async () => {
     try {
-      const response = await fetch(process.env.REACT_APP_API_URL+'/api/register', {
+      const response = await fetch('/api/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password, name }),

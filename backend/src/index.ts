@@ -1,10 +1,9 @@
 import express, { Request, Response } from 'express';
-import cors from 'cors';
 import bcrypt from 'bcrypt';
 import { pool } from './db'; // Database connection
 
 const app = express();
-app.use(cors());
+
 app.use(express.json()); // For parsing application/json
 
 // Simple route for checking the server
