@@ -1,3 +1,31 @@
+
+setup for docker WITHOUT DOCKER COMPOSE:
+-========================
+
+make sure to change the ip of
+
+docker build -t express-backend .
+docker run -d --name express-backend -p 3001:3001 express-backend
+
+
+
+docker build -t nginx-reverse-proxy .
+docker run -d -p 8080:80 -link express-backend nginx-reverse-proxy
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-------======================================================
 ADDED const cors = require('cors'); SO FRONTEND CAM COMMUNICATE WITH BACKEND
 
 BACKEND-----------3000
