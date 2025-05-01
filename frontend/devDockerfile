@@ -1,4 +1,4 @@
-# Step 1: Build the React app
+#THIS DOCKER FILE IS FOR TESTING ONLY
 FROM node:16 AS build
 
 WORKDIR /app
