@@ -24,13 +24,13 @@ jobs:
 
       - name: Build and push React image
         run: |
-          docker build -t sanfara/nginx-reverse-proxy:latest ./nginx
-          docker push sanfara/nginx-reverse-proxy:latest
+          docker build -t sanfara/nginx-reverse-proxy:v2 ./nginx
+          docker push sanfara/nginx-reverse-proxy:v2
 
       - name: Build and push Express image
         run: |
-          docker build -t sanfara/express-backend:latest ./backend
-          docker push sanfara/express-backend:latest
+          docker build -t sanfara/express-backend:v2 ./backend
+          docker push sanfara/express-backend:v2
 
       - name: Run Tests
         run: |
