@@ -2,18 +2,32 @@
 setup for docker WITHOUT DOCKER COMPOSE:
 -========================
 
+sudo nano /etc/postgresql/16/main/pg_hba.conf 
+and then insert the line  ONLY FOR DOCKER WITHOUT COMPOSE 
+host    mydb    myuser    172.17.0.0/16    md5
+
+
+
 make sure to change the ip of
 
 docker build -t express-backend .
 docker run -d --name express-backend -p 3001:3001 express-backend
 
 
+#i changed this port to 8080 instead of 80 in case you are running nginx in port 80
 
 docker build -t nginx-reverse-proxy .
-docker run -d -p 8080:80 -link express-backend nginx-reverse-proxy
+docker run -d -p 8080:80 --link express-backend nginx-reverse-proxy
+==========================
 
+SETUP FOR DOCKER COMPOSE
 
+sudo nano /etc/postgresql/16/main/pg_hba.conf 
+and then insert the line
+host    mydb    myuser    172.18.0.0/16    md5
 
+inside the team-manager-app folder
+docker compose up --build
 
 
 
