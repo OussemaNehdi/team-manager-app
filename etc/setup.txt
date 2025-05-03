@@ -28,7 +28,7 @@ host    mydb    myuser    172.18.0.0/16    md5
 
 inside the team-manager-app folder
 docker compose up --build
-
+v2
 
 =========
 PUSHING TO DOCCKER HUB 
@@ -44,7 +44,7 @@ docker push your-dockerhub-username/frontend:latest
 docker push your-dockerhub-username/backend:latest
 
 =============================
-CREATING A KUBERNETES CLUSTER IN HOME
+CREATING A KUBERNETES CLUSTER AT HOME
 
 first create 2 VM (I used vmware)
 
@@ -57,10 +57,35 @@ go to master node and do the following :
 
 kubectl apply -f bothyamlfilesHERE.yaml
 
+============================================
+DOING CI + CD
+
+# Install ArgoCD via kubectl
+kubectl create namespace argocd
+kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+#Forward port 
+kubectl port-forward svc/argocd-server -n argocd --address 0.0.0.0 8080:443
+
+#get the password for the ArgoCD
+kubectl get secret argocd-initial-admin-secret -n argocd -o jsonpath="{.data.password}" | base64 -d
+
+#YOUR USERNAME IS BY DEFAULT: admin
+argocd login localhost:8080 --username admin --password <your-argocd-password> --insecure
 
 
+argocd app create team-manager \
+  --repo https://github.com/OussemaNehdi/team-manager-app \
+  --path KubernetesClusterYamlConfig \
+  --dest-server https://kubernetes.default.svc \
+  --dest-namespace default
 
 
+argocd app set team-manager --sync-policy automated
+
+argocd app set team-manager --sync-policy automated
+
+#and now everytime u change the version name when pushing in 1 the CI which will cause the CI and 2 the depolyment yaml files which will cause the CD
+#if not then manually do argocd app sync team-manager
 
 
 -------======================================================
