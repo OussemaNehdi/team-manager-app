@@ -2,8 +2,8 @@ name: CI Pipeline
 
 on:
   push:
-    branches:
-      - master
+    tags:
+      - 'v*'
 
 jobs:
   build:
@@ -24,13 +24,13 @@ jobs:
 
       - name: Build and push React image
         run: |
-          docker build -t sanfara/nginx-reverse-proxy:${{ env.VERSION }} ./nginx
-          docker push sanfara/nginx-reverse-proxy:${{ env.VERSION }}
+          docker build -t sanfara/nginx-reverse-proxy:${{ github.ref_name }} ./nginx
+          docker push sanfara/nginx-reverse-proxy:${{ github.ref_name }}
 
       - name: Build and push Express image
         run: |
-          docker build -t sanfara/express-backend:${{ env.VERSION }} ./backend
-          docker push sanfara/express-backend:${{ env.VERSION }}
+          docker build -t sanfara/express-backend:${{ github.ref_name }} ./backend
+          docker push sanfara/express-backend:${{ github.ref_name }}
 
       - name: Run Tests
         run: |
