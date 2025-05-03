@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: nginx
-          image: sanfara/nginx-reverse-proxy:v2
+          image: sanfara/nginx-reverse-proxy:${VERSION}
           imagePullPolicy: Always
           ports:
             - containerPort: 80
