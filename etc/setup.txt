@@ -11,7 +11,7 @@ git push origin v3
 
 
 
-
+V6
 
 setup for docker WITHOUT DOCKER COMPOSE:
 -========================
