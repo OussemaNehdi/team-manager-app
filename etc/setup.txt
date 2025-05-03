@@ -1,3 +1,17 @@
+=============================
+THIS IS HOW TO PUSH FROM GIT TO GITHUB TO MAKE SURE THE CD IS WORKING PERFECTLY
+
+git add .
+git commit -m "Add login button to frontend"
+git push origin master
+
+git tag -a v3 -m "Release version v3"
+git push origin v3
+
+
+
+
+
 
 setup for docker WITHOUT DOCKER COMPOSE:
 -========================
