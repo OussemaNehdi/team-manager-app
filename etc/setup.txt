@@ -32,7 +32,7 @@ docker compose up --build
 
 =========
 PUSHING TO DOCCKER HUB 
-
+x
 first create an account and log in to dockerHub
 
 # Tag images
