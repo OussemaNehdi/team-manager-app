@@ -30,8 +30,32 @@ inside the team-manager-app folder
 docker compose up --build
 
 
+=========
+PUSHING TO DOCCKER HUB 
 
+first create an account and log in to dockerHub
 
+# Tag images
+docker tag frontend:latest your-dockerhub-username/frontend:latest
+docker tag backend:latest your-dockerhub-username/backend:latest
+
+# Push to Docker Hub or GitHub Container Registry (GHCR)
+docker push your-dockerhub-username/frontend:latest
+docker push your-dockerhub-username/backend:latest
+
+=============================
+CREATING A KUBERNETES CLUSTER IN HOME
+
+first create 2 VM (I used vmware)
+
+one for master node and the other for worker node
+database will be running on host and both the frontend and backend will be running on the workers node
+
+join the worker node to master node and then 
+
+go to master node and do the following :
+
+kubectl apply -f bothyamlfilesHERE.yaml
 
 
 
