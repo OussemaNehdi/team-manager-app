@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: nginx
-          image: sanfara/nginx-reverse-proxy:${{ github.ref_name }}
+          image: sanfara/nginx-reverse-proxy:$TAG_NAME
           imagePullPolicy: Always
           ports:
             - containerPort: 80
