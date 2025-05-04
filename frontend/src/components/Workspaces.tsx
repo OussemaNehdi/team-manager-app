@@ -71,7 +71,7 @@ const Workspaces: React.FC<WorkspacesProps> = ({ userId, setSelectedWorkspaceId 
 
   useEffect(() => {
     fetchWorkspaces();
-  }, [[fetchWorkspaces]]);
+  }, [fetchWorkspaces]);
 
   return (
     <div>
