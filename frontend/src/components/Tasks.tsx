@@ -59,7 +59,7 @@ const Tasks: React.FC<TasksProps> = ({ userId, workspaceId, setSelectedWorkspace
   useEffect(() => {
     fetchTasks();
     checkOwnership();
-  }, []);
+  }, [checkOwnership, fetchTasks]);
 
   return (
     <div>
