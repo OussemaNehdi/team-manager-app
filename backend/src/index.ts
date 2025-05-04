@@ -17,7 +17,7 @@ app.post('/api/login', async (req: Request, res: Response): Promise<void> => {
     const { email, password } = req.body;
 
     if (!email || !password) {
-        res.status(400).json({ error: 'Email and password are required.xx111111' });
+        res.status(400).json({ error: 'Email and password are required.xx121212xaa' });
         return;
     }
 
