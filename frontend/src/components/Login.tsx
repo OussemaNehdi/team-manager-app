@@ -38,7 +38,7 @@ const Login: React.FC<LoginProps> = ({ setUserId }) => {
 
   return (
     <div>
-      <h2>Login  Now</h2>
+      <h2>LoginNow</h2>
 
       <input
         type="email"
