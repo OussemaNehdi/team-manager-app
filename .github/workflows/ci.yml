@@ -50,7 +50,7 @@ jobs:
           git add KubernetesClusterYamlConfig/express-backenddeployment.yaml
           git add KubernetesClusterYamlConfig/nginx-deployment.yaml
           git commit -m "Update deployments for tag $TAG_NAME"
-          git push
+          git push origin master
       
 
       - name: Run Tests
