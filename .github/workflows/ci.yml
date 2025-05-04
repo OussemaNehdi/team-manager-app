@@ -25,6 +25,15 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
+
+      - name: Build react static folder and copy it to nginx folder
+        working-directory: ./frontend
+        run: |
+          npm install
+          npm run build
+          cp -r build ../nginx/
+        
+
       - name: Build and push React image
         run: |
           docker build -t sanfara/nginx-reverse-proxy:${{ github.ref_name }} ./nginx
