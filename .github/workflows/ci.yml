@@ -10,11 +10,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Checkout the master branch instead of just the tag to avoid detached HEAD issues
-      - name: Checkout master branch
+      - name: Checkout repository
         uses: actions/checkout@v2
-        with:
-          ref: master
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
@@ -39,7 +36,10 @@ jobs:
         env:
           TAG_NAME: ${{ github.ref_name }}
         run: |
+          # Replace tag in express backend template
           envsubst < KubernetesClusterYamlConfig/express-backenddeployment-t.yaml > KubernetesClusterYamlConfig/express-backenddeployment.yaml
+          
+          # Replace tag in Nginx template
           envsubst < KubernetesClusterYamlConfig/nginx-deployment-t.yaml > KubernetesClusterYamlConfig/nginx-deployment.yaml
 
       - name: Commit updated YAML files
@@ -48,6 +48,7 @@ jobs:
         run: |
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
+          git remote set-url origin https://x-access-token:${{ secrets.PERSONAL_ACCESS_TOKEN }}@github.com/${{ github.repository }}
           git add KubernetesClusterYamlConfig/express-backenddeployment.yaml
           git add KubernetesClusterYamlConfig/nginx-deployment.yaml
           git commit -m "Update deployments for tag $TAG_NAME"
