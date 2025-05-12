@@ -1,3 +1,5 @@
+#SKIP TERRAFORM SETUP TO MAKE THINGS SIMPLER AND SETUP BOTH VMs BY YOUR SELF
+
 provider "vsphere" {
   user           = "your-vmware-username"
   password       = "your-vmware-password"
