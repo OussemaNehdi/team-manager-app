@@ -10,7 +10,7 @@ const App: React.FC = () => {
 
   return (
     <div>
-      <h1>Team Manager App</h1>
+      <h1>Team Manager App X</h1>
       {!userId ? (
         <>
           <Signup setUserId={setUserId} />
