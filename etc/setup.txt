@@ -1,5 +1,36 @@
+============================
+#MAKE SURE THAT YOUR SERVERS ARE ASSSIGNED A STATIC IP
+#I USED 
+192.168.1.15/24 for the database server
+192.168.1.16/24 for the master node
+192.168.1.17/24 for the worker node
+
+
+#repeat this three times for the three servers
+sudo nano /etc/netplan/(your config file here)
+network:
+  version: 2
+  ethernets:
+    ens33:        # <- replace with your interface name
+      dhcp4: no
+      addresses:
+        - 192.168.1.16/24     # <- your desired static IP
+      gateway4: 192.168.1.1   # <- your router's IP
+      nameservers:
+        addresses:
+          - 8.8.8.8
+          - 1.1.1.1
+
+
+
+
+
+
+
+
+
 =============================
-THIS IS HOW TO PUSH FROM GIT TO GITHUB TO MAKE SURE THE CD IS WORKING PERFECTLY
+#THIS IS HOW TO PUSH FROM GIT TO GITHUB TO MAKE SURE THE CD IS WORKING PERFECTLY
 
 git add .
 git commit -m "Add login button to frontend"
