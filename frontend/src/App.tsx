@@ -44,27 +44,37 @@ const App: React.FC = () => {
   };
 
   return (
-    <div>
-      <h1>Team Manager App</h1>
-      {!userId ? (
-        <>
-          <Signup setUserId={setUserId} />
-          <Login setUserId={setUserId} />
-        </>
-      ) : selectedWorkspaceId ? (
-        <Tasks
-          userId={userId}
-          workspaceId={selectedWorkspaceId}
-          setSelectedWorkspaceId={setSelectedWorkspaceId}
-        />
-      ) : (
-        <Workspaces userId={userId} setSelectedWorkspaceId={setSelectedWorkspaceId} />
-      )}
-      {userId && (
-        <button onClick={handleLogout} style={{ marginTop: '20px' }}>
-          Logout
-        </button>
-      )}
+    <div className="min-h-screen bg-background flex flex-col items-center justify-center">
+      <header className="bg-primary text-white w-full py-4 shadow-md">
+        <h1 className="text-center text-3xl font-bold">Team Manager App</h1>
+      </header>
+      <main className="flex flex-col items-center justify-center mt-8">
+        {!userId ? (
+          <div className="space-y-6">
+            <Signup setUserId={setUserId} />
+            <Login setUserId={setUserId} />
+          </div>
+        ) : selectedWorkspaceId ? (
+          <Tasks
+            userId={userId}
+            workspaceId={selectedWorkspaceId}
+            setSelectedWorkspaceId={setSelectedWorkspaceId}
+          />
+        ) : (
+          <Workspaces userId={userId} setSelectedWorkspaceId={setSelectedWorkspaceId} />
+        )}
+        {userId && (
+          <button
+            onClick={handleLogout}
+            className="mt-6 px-6 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition"
+          >
+            Logout
+          </button>
+        )}
+      </main>
+      <footer className="bg-secondary text-white w-full py-4 mt-auto">
+        <p className="text-center text-sm">© 2025 XTeam Manager App. All rights reserved.</p>
+      </footer>
     </div>
   );
 };
