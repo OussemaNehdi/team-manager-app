@@ -65,7 +65,7 @@ app.post('/api/login', async (req: Request, res: Response): Promise<void> => {
         // Set HTTP-only cookie
         res.cookie('token', token, {
           httpOnly: true,
-          secure: true, // Set to true in production with HTTPS
+          secure: false, // Set to true in production with HTTPS
           maxAge: 3600000, // 1 hour
         });
 
