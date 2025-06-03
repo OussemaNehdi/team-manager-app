@@ -25,6 +25,24 @@ const App: React.FC = () => {
     verifySession();
   }, []);
 
+  // Logout function
+  const handleLogout = async () => {
+    try {
+      const response = await fetch('/api/logout', {
+        method: 'POST',
+        credentials: 'include', // Include cookies
+      });
+      if (response.ok) {
+        setUserId(null); // Clear user session
+        setSelectedWorkspaceId(null); // Reset workspace selection
+      } else {
+        console.error('Failed to log out');
+      }
+    } catch (error) {
+      console.error('Error during logout:', error);
+    }
+  };
+
   return (
     <div>
       <h1>Team Manager App</h1>
@@ -41,6 +59,11 @@ const App: React.FC = () => {
         />
       ) : (
         <Workspaces userId={userId} setSelectedWorkspaceId={setSelectedWorkspaceId} />
+      )}
+      {userId && (
+        <button onClick={handleLogout} style={{ marginTop: '20px' }}>
+          Logout
+        </button>
       )}
     </div>
   );
