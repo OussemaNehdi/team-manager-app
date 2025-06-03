@@ -84,7 +84,7 @@ app.post('/api/logout', (req: Request, res: Response) => {
 
 // Protected route example
 app.get('/api/protected', authenticateJWT, (req: any, res: any) => {
-  res.json({ message: 'This is a protected route', user: req.user });
+  res.json({ user: req.user }); // Return user info if authenticated
 });
 
 
