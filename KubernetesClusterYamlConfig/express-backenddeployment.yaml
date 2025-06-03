@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: express-backend
-          image: sanfara/express-backend:v36
+          image: sanfara/express-backend:v37
           imagePullPolicy: Always
           ports:
             - containerPort: 3001
