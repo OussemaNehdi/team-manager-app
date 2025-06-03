@@ -10,14 +10,18 @@ const Workspaces: React.FC<WorkspacesProps> = ({ userId, setSelectedWorkspaceId 
   const [newWorkspaceName, setNewWorkspaceName] = useState('');
   const [newWorkspaceDescription, setNewWorkspaceDescription] = useState('');
   const [joinWorkspaceId, setJoinWorkspaceId] = useState('');
-  // const REACT_APP = process.env.REACT_APP_API_URL || 'http://localhost:3001';
-  
 
   const fetchWorkspaces = async () => {
     try {
-      const response = await fetch(`/api/workspaces/${userId}`);
-      const data = await response.json();
-      setWorkspaces(data);
+      const response = await fetch(`/api/workspaces/${userId}`, {
+        credentials: 'include', // Include cookies
+      });
+      if (response.ok) {
+        const data = await response.json();
+        setWorkspaces(data);
+      } else {
+        console.error('Failed to fetch workspaces');
+      }
     } catch (error) {
       console.error('Error fetching workspaces:', error);
     }
@@ -33,6 +37,7 @@ const Workspaces: React.FC<WorkspacesProps> = ({ userId, setSelectedWorkspaceId 
           description: newWorkspaceDescription,
           userId,
         }),
+        credentials: 'include', // Include cookies
       });
 
       if (response.ok) {
@@ -56,6 +61,7 @@ const Workspaces: React.FC<WorkspacesProps> = ({ userId, setSelectedWorkspaceId 
           userId,
           workspaceId: joinWorkspaceId,
         }),
+        credentials: 'include', // Include cookies
       });
 
       if (response.ok) {
@@ -71,7 +77,7 @@ const Workspaces: React.FC<WorkspacesProps> = ({ userId, setSelectedWorkspaceId 
 
   useEffect(() => {
     fetchWorkspaces();
-  }, [fetchWorkspaces]);
+  }, []);
 
   return (
     <div>

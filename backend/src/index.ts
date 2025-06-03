@@ -1,10 +1,32 @@
 import express, { Request, Response } from 'express';
 import bcrypt from 'bcrypt';
 import { pool } from './db'; // Database connection
+import jwt from 'jsonwebtoken';
+import cookieParser from 'cookie-parser';
 
 const app = express();
 
 app.use(express.json()); // For parsing application/json
+app.use(cookieParser()); // Middleware to parse cookies
+
+const SECRET_KEY = 'your_secret_key'; // Replace with a secure key
+
+// Middleware to verify JWT
+const authenticateJWT = (req: any, res: any, next: Function) => {
+  const token = req.cookies.token;
+
+  if (!token) {
+    return res.status(401).json({ error: 'Unauthorized' });
+  }
+
+  try {
+    const decoded = jwt.verify(token, SECRET_KEY);
+    req.user = decoded; // Attach user info to the request object
+    next();
+  } catch (error) {
+    return res.status(403).json({ error: 'Forbidden' });
+  }
+};
 
 // Simple route for checking the server
 app.get('/', (req: Request, res: Response): void => {
@@ -37,11 +59,32 @@ app.post('/api/login', async (req: Request, res: Response): Promise<void> => {
             return;
         }
 
+        // Generate JWT
+        const token = jwt.sign({ id: user.id, email: user.email }, SECRET_KEY, { expiresIn: '1h' });
+
+        // Set HTTP-only cookie
+        res.cookie('token', token, {
+          httpOnly: true,
+          secure: true, // Set to true in production with HTTPS
+          maxAge: 3600000, // 1 hour
+        });
+
         res.status(200).json({ id: user.id, email: user.email, name: user.name });
     } catch (error) {
         console.error('Error during login:', error);
         res.status(500).json({ error: 'Failed to log in.' });
     }
+});
+
+// Logout route
+app.post('/api/logout', (req: Request, res: Response) => {
+  res.clearCookie('token');
+  res.status(200).json({ message: 'Logged out successfully' });
+});
+
+// Protected route example
+app.get('/api/protected', authenticateJWT, (req: any, res: any) => {
+  res.json({ message: 'This is a protected route', user: req.user });
 });
 
 

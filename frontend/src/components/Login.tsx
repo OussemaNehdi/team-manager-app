@@ -10,27 +10,24 @@ const Login: React.FC<LoginProps> = ({ setUserId }) => {
   
 
   const handleLogin = async () => {
-    console.log("Hanld logic fire")
     try {
       const response = await fetch('/api/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
+        credentials: 'include', // Include cookies
       });
-      console.log("Hanld logic fire")
+
       if (!response.ok) {
-        console.log("Hanld logic fireerror")
         const errorText = await response.text();
         alert(`Error: ${errorText}`);
         return;
       }
 
       const data = await response.json();
-      console.log("Hanld logic firejson")
-      console.log(data.id)
-      setUserId(data.id);
+      console.log(data);
+      setUserId(data.id); // Update state
     } catch (error) {
-      console.log("Hanld logic fire catching")
       console.error('Error during login:', error);
       alert('An error occurred during login.');
     }

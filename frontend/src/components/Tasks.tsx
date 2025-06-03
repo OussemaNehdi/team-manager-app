@@ -12,13 +12,18 @@ const Tasks: React.FC<TasksProps> = ({ userId, workspaceId, setSelectedWorkspace
   const [description, setDescription] = useState('');
   const [deadline, setDeadline] = useState('');
   const [isOwner, setIsOwner] = useState(false);
-  // const REACT_APP = process.env.REACT_APP_API_URL || 'http://localhost:3001';
 
   const fetchTasks = async () => {
     try {
-      const response = await fetch(`/api/tasks/${workspaceId}`);
-      const data = await response.json();
-      setTasks(data);
+      const response = await fetch(`/api/tasks/${workspaceId}`, {
+        credentials: 'include', // Include cookies
+      });
+      if (response.ok) {
+        const data = await response.json();
+        setTasks(data);
+      } else {
+        console.error('Failed to fetch tasks');
+      }
     } catch (error) {
       console.error('Error fetching tasks:', error);
     }
@@ -26,10 +31,15 @@ const Tasks: React.FC<TasksProps> = ({ userId, workspaceId, setSelectedWorkspace
 
   const checkOwnership = async () => {
     try {
-      const response = await fetch(`/api/workspaces/${userId}`);
-      const data = await response.json();
-      const workspace = data.find((w: any) => w.id === workspaceId);
-      setIsOwner(workspace?.owner_id === userId);
+      const response = await fetch(`/api/workspaces/${workspaceId}`, {
+        credentials: 'include', // Include cookies
+      });
+      if (response.ok) {
+        const data = await response.json();
+        setIsOwner(data.owner_id === userId);
+      } else {
+        console.error('Failed to check ownership');
+      }
     } catch (error) {
       console.error('Error checking ownership:', error);
     }
@@ -41,6 +51,7 @@ const Tasks: React.FC<TasksProps> = ({ userId, workspaceId, setSelectedWorkspace
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ workspaceId, title, description, deadline }),
+        credentials: 'include', // Include cookies
       });
 
       if (response.ok) {
@@ -59,7 +70,7 @@ const Tasks: React.FC<TasksProps> = ({ userId, workspaceId, setSelectedWorkspace
   useEffect(() => {
     fetchTasks();
     checkOwnership();
-  }, [checkOwnership, fetchTasks]);
+  }, []);
 
   return (
     <div>

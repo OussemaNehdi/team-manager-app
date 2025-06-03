@@ -16,6 +16,7 @@ const Signup: React.FC<SignupProps> = ({ setUserId }) => {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password, name }),
+        credentials: 'include', // Include cookies
       });
 
       if (!response.ok) {
@@ -25,7 +26,7 @@ const Signup: React.FC<SignupProps> = ({ setUserId }) => {
       }
 
       const data = await response.json();
-      setUserId(data.id);
+      setUserId(data.id); // Update state
     } catch (error) {
       console.error('Error during signup:', error);
       alert('An error occurred during signup.');
