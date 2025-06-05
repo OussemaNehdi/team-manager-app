@@ -46,7 +46,7 @@ const App: React.FC = () => {
   return (
     <div className="min-h-screen bg-background flex flex-col items-center justify-center">
       <header className="bg-primary text-white w-full py-4 shadow-md">
-        <h1 className="text-center text-3xl font-bold">Team Manager App</h1>
+        <h1 className="text-center text-3xl font-bold">Team Manager App X</h1>
       </header>
       <main className="flex flex-col items-center justify-center mt-8">
         {!userId ? (
